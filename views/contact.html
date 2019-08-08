@@ -9,11 +9,11 @@
 		<title>Generic - Introspect by TEMPLATED</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="https://healthwealthint.com/assets/css/main.css" />
-		<script src="https://healthwealthint.com/assets/js/jquery.min.js"></script>
-		<script src="https://healthwealthint.com/assets/js/skel.min.js"></script>
-		<script src="https://healthwealthint.com/assets/js/util.js"></script>
-		<script src="https://healthwealthint.com/assets/js/main.js"></script>
+		<link rel="stylesheet" href="/static/css/main.css" />
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/skel.min.js"></script>
+		<script src="/static/js/util.js"></script>
+		<script src="/static/js/main.js"></script>
 	</head>
 	<body>
 
@@ -28,7 +28,8 @@
 							{{if eq .User ""}}
 							<a href="/login">Login</a>
 							{{else}}
-							<a href="/article">Articles</a>                   
+							<a href="/articleku">Articles</a>                   
+							<a href="/pesan">Pesan</a>                   
 							<a href="/logout">Logout</a>
 							{{end}}
 						
@@ -41,7 +42,7 @@
 			<section id="main" >
 				<div class="inner">
 					<header class="major special">
-						<h1>Contact Us</h1>
+						<h1>Contact Us</h1> <font size=3 color=blue>{{ .Info }}</font>
 						<table border="2" class="alt" ><tr><td>
 						<form method="post" action="#">
 							<div class="field">
@@ -53,9 +54,10 @@
 									<input type="email" name="email" id="email"/>
 								</div>
 								<div class="field">
-										<label for="nama">Turing : [ {{ .Turing }} ] isi turing disamping</label>
-										<input type="nama" name="turing" id="nama"/>
-										<input type="text" name="turingini" value="{{ .Turing }}"/>
+										<label for="nama">Captcha : <h2>[ {{ .Turing }} ] </h2>
+											isi Captcha diatas dengan sesuai</label>
+											Captcha : <input type="nama" size=4 name="turing" id="nama"/>
+										<input type="hidden" name="turingini" value="{{ .Turing }}"/>
 									</div>
 							
 								<div class="field">

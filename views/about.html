@@ -1,39 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Welcome</title>
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Generic - Introspect by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/static/css/main.css" />
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/skel.min.js"></script>
+		<script src="/static/js/util.js"></script>
+		<script src="/static/js/main.js"></script>
+	</head>
+	<body>
 
-      <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="logo">GO Learning</a>
+					<nav id="nav">
+							<a href="/">Home</a>
+							<a href="/about">About</a>
+							<a href="/contact">Contact Us</a>
+							{{if eq .User ""}}
+							<a href="/login">Login</a>
+							{{else}}
+							<a href="/articleku">Articles</a>                   
+							<a href="/pesan">Pesan</a>                   
+							<a href="/logout">Logout</a>
+							{{end}}
+						
+					</nav>
+				</div>
+			</header>
+			<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+			
+		<!-- Main -->
+			<section id="main" >
+				<div class="inner">
+					<header class="major special">
+						<h1>Selamat Datang</h1>						
+					</header>
+					<hr>
+					<div>
+							<header>
+							<h3>Tentang Aplikasi</h3>
+							<p>Aplikasi ini terdiri dari 7 halaman,<br>
+								Halaman Home, berisi artikel yang sudah di Publish<br>
+								Halaman About, berisi tentang informasi dari Aplikasi<br>
+								Halaman Contact Us, Pengunjung aplikasi dapat mengirimkan pesan kepada Admin<br>
+								Halaman Articles, Pada halaman ini Pengguna yang sudah login dapat menambah, 
+								mengedit, Publish, dan menghapus artikel yang akan ditampilkan di halaman Home<br>
+								Halaman Pesan, Pada halaman ini menampilkan pesan yang di tulis Pengunjung di halaman Contact Us<br>
+								Halaman Login, untuk masuk sebagai Admin.
+								Halaman Register, untuk membuat login, juga mendaftar sebagai Admin,
+							</p>
+						</header>
+					<hr>	
+					</div>
+				</div>
+			</section>
 
-</head>
-<body>
-        <nav>
-                <div class="nav-wrapper">
-                  <a href="#" class="brand-logo">Go</a>
-                  <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact Us</a></li>
-                    {{if eq .username ""}}
-                    <li><a href="/login">Login</a></li>
-                    {{else}}
-                    <li><a href="/article">Articles</a></li>                    
-                    <li><a href="/logout">Logout</a></li>
-                    {{end}}
-                  </ul>
-                </div>
-              </nav>
-    <div class="container">
-            <h3>About {{ .username }}</h3>
-    </div>
-    
-</body>
+		<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<header>
+						<h2>Get in Touch</h2>
+					</header>
+					
+					<div class="copyright">
+						&copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a href="https://unsplash.com/">Unsplash</a>
+					</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+		
+
+	</body>
 </html>

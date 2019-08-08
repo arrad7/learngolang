@@ -9,11 +9,11 @@
 		<title>Generic - Introspect by TEMPLATED</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="http://healthwealthint.com/assets/css/main.css" />
-		<script src="http://localhost:8000/assets/js/jquery.min.js"></script>
-		<script src="http://localhost:8000/assets/js/skel.min.js"></script>
-		<script src="http://localhost:8000/assets/js/util.js"></script>
-		<script src="http://localhost:8000//assets/js/main.js"></script>
+		<link rel="stylesheet" href="/static/css/main.css" />
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/skel.min.js"></script>
+		<script src="/static/js/util.js"></script>
+		<script src="/static/js/main.js"></script>
 	</head>
 	<body>
 
@@ -28,7 +28,8 @@
 							{{if eq .User ""}}
 							<a href="/login">Login</a>
 							{{else}}
-							<a href="/article">Articles</a>                   
+							<a href="/articleku">Articles</a>                   
+							<a href="/pesan">Pesan</a>                   
 							<a href="/logout">Logout</a>
 							{{end}}
 						
@@ -36,7 +37,7 @@
 				</div>
 			</header>
 			<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-
+			
 		<!-- Main -->
 			<section id="main" >
 				<div class="inner">

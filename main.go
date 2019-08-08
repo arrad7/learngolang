@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
-
-	"math/rand" // "os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/kataras/go-sessions"
@@ -17,6 +16,19 @@ import (
 
 var db *sql.DB
 var err error
+
+func connect_db() {
+	db, err = sql.Open("mysql", "root:arrad@tcp(127.0.0.1)/go_db")
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
 
 type user struct {
 	ID        int
@@ -35,23 +47,19 @@ type Article struct {
 	Isi   string
 	Sta   string
 }
-
+type Pesan struct {
+	ID       int
+	Nama     string
+	Email    string
+	Isipesan string
+}
+type ResponsePesan struct {
+	Pesana []Pesan
+	User   string
+}
 type ResponseArticle struct {
 	Articles []Article
 	User     string
-}
-
-func connect_db() {
-	db, err = sql.Open("mysql", "root:arrad@tcp(127.0.0.1)/go_db")
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatalln(err)
-	}
 }
 
 func routes() {
@@ -60,12 +68,13 @@ func routes() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/about", about)
-	http.HandleFunc("/article", article)
+	http.HandleFunc("/articleku", articleku)
 	http.HandleFunc("/contact", contact)
 	http.HandleFunc("/update", update)
 	http.HandleFunc("/updatestatrue", updatestatrue)
 	http.HandleFunc("/updatestafalse", updatestafalse)
 	http.HandleFunc("/updateaktif", updateaktif)
+	http.HandleFunc("/pesan", pesan)
 }
 
 func main() {
@@ -73,7 +82,9 @@ func main() {
 	routes()
 
 	defer db.Close()
-
+	http.Handle("/static/",
+		http.StripPrefix("/static/",
+			http.FileServer(http.Dir("views/assets"))))
 	fmt.Println("Server running on port :8000")
 	http.ListenAndServe(":8000", nil)
 }
@@ -111,9 +122,6 @@ func QueryUser(username string) user {
 
 func home(w http.ResponseWriter, r *http.Request) {
 	session := sessions.Start(w, r)
-	if len(session.GetString("username")) == 0 {
-		//http.Redirect(w, r, "/login", 301)
-	}
 
 	var t, err = template.ParseFiles("views/home.html")
 	if err != nil {
@@ -140,15 +148,52 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 	response := ResponseArticle{
 		Articles: datas,
-		User:     session.GetString("username"),
+		User:     session.GetString("name"),
 	}
 	err = t.Execute(w, response)
 	if err != nil {
 		log.Printf("execute template err: %+v\n", err)
 	}
 	return
-
 }
+
+func pesan(w http.ResponseWriter, r *http.Request) {
+	session := sessions.Start(w, r)
+
+	var t, err = template.ParseFiles("views/pesan.html")
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	rows, err := db.Query("select id,nama,email,pesan from `pesan` where aktif like 'T' ")
+	if err != nil {
+		log.Printf("error query:%+v\n", err)
+		return
+	}
+	defer rows.Close()
+	var datas []Pesan
+	var datan Pesan
+	for rows.Next() {
+		datan = Pesan{}
+		err = rows.Scan(&datan.ID, &datan.Nama, &datan.Email, &datan.Isipesan)
+		if err != nil {
+			log.Printf("scan error: %+v\n", err)
+			continue
+		}
+		datas = append(datas, datan)
+	}
+	response := ResponsePesan{
+		Pesana: datas,
+		User:   session.GetString("name"),
+	}
+	err = t.Execute(w, response)
+	if err != nil {
+		log.Printf("execute template err: %+v\n", err)
+	}
+	return
+}
+
 func about(w http.ResponseWriter, r *http.Request) {
 	session := sessions.Start(w, r)
 	if len(session.GetString("username")) == 0 {
@@ -156,8 +201,7 @@ func about(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var data = map[string]string{
-		"username": session.GetString("username"),
-		"message":  "Welcome to the Go !",
+		"User": session.GetString("username"),
 	}
 	var t, err = template.ParseFiles("views/about.html")
 	if err != nil {
@@ -170,7 +214,6 @@ func about(w http.ResponseWriter, r *http.Request) {
 }
 
 func update(w http.ResponseWriter, r *http.Request) {
-	//update
 	judulup := r.FormValue("judulup")
 	isiup := r.FormValue("isiup")
 	idup := r.FormValue("idup")
@@ -186,7 +229,7 @@ func update(w http.ResponseWriter, r *http.Request) {
 			// return 'return dihilangkan supaya tidak keluar
 		}
 	}
-	http.Redirect(w, r, "/article", 302)
+	http.Redirect(w, r, "/articleku", 302)
 	return
 }
 func updatestatrue(w http.ResponseWriter, r *http.Request) {
@@ -204,7 +247,7 @@ func updatestatrue(w http.ResponseWriter, r *http.Request) {
 			// return 'return dihilangkan supaya tidak keluar
 		}
 	}
-	http.Redirect(w, r, "/article", 302)
+	http.Redirect(w, r, "/articleku", 302)
 	return
 }
 func updateaktif(w http.ResponseWriter, r *http.Request) {
@@ -222,7 +265,7 @@ func updateaktif(w http.ResponseWriter, r *http.Request) {
 			// return 'return dihilangkan supaya tidak keluar
 		}
 	}
-	http.Redirect(w, r, "/article", 302)
+	http.Redirect(w, r, "/articleku", 302)
 	return
 }
 func updatestafalse(w http.ResponseWriter, r *http.Request) {
@@ -240,13 +283,13 @@ func updatestafalse(w http.ResponseWriter, r *http.Request) {
 			// return 'return dihilangkan supaya tidak keluar
 		}
 	}
-	http.Redirect(w, r, "/article", 302)
+	http.Redirect(w, r, "/articleku", 302)
 	return
 }
-func article(w http.ResponseWriter, r *http.Request) {
+func articleku(w http.ResponseWriter, r *http.Request) {
 	session := sessions.Start(w, r)
 	if len(session.GetString("username")) == 0 {
-		//http.Redirect(w, r, "/login", 301)
+		http.Redirect(w, r, "/login", 302)
 	}
 	var t, err = template.ParseFiles("views/article.html")
 	if err != nil {
@@ -282,7 +325,6 @@ func article(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer rows.Close()
-	//datas := Queryarticle()
 	var datas []Article
 	var datan Article
 	for rows.Next() {
@@ -302,30 +344,34 @@ func article(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("execute template err: %+v\n", err)
 	}
-
 	return
-
 }
+
 func contact(w http.ResponseWriter, r *http.Request) {
 	turingku := r.FormValue("turing")
 	turingini := r.FormValue("turingini")
 	nama := r.FormValue("nama")
 	email := r.FormValue("email")
 	pesan := r.FormValue("pesan")
-	log.Printf("siapkan : %+v\n", nama)
-	if turingku == turingini && nama != "" {
-		log.Printf("input : %+v\n", nama)
-		stmt, err := db.Prepare("insert into `pesan` ( nama, email, pesan) values ( ?, ?, ?)")
-		if err == nil {
-			_, err := stmt.Exec(nama, email, pesan)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+	var Infona string
+	Infona = ""
+	if nama != "" {
+		if turingku == turingini {
+			log.Printf("input : %+v\n", nama)
+			stmt, err := db.Prepare("insert into `pesan` ( nama, email, pesan) values ( ?, ?, ?)")
+			if err == nil {
+				_, err := stmt.Exec(nama, email, pesan)
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+				Infona = "Pesan Anda berhasil terkirim."
+				// return 'return dihilangkan supaya tidak keluar
 			}
-			// return 'return dihilangkan supaya tidak keluar
+		} else {
+			Infona = "captcha yang anda masukan salah"
 		}
 	}
-
 	session := sessions.Start(w, r)
 	if len(session.GetString("username")) == 0 {
 		//http.Redirect(w, r, "/login", 301)
@@ -335,6 +381,7 @@ func contact(w http.ResponseWriter, r *http.Request) {
 	var data = map[string]string{
 		"User":   session.GetString("username"),
 		"Turing": turingna,
+		"Info":   Infona,
 	}
 	var t, err = template.ParseFiles("views/contact.html")
 	if err != nil {
@@ -382,31 +429,29 @@ func register(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	session := sessions.Start(w, r)
-	if len(session.GetString("username")) != 0 && checkErr(w, r, err) {
-		http.Redirect(w, r, "/", 302)
-	}
 	if r.Method != "POST" {
 		http.ServeFile(w, r, "views/login.html")
 		return
 	}
+
 	username := r.FormValue("username")
 	password := r.FormValue("password")
+	if username != "" && password != "" {
+		users := QueryUser(username)
 
-	users := QueryUser(username)
+		//deskripsi dan compare password
+		var password_tes = bcrypt.CompareHashAndPassword([]byte(users.Password), []byte(password))
 
-	//deskripsi dan compare password
-	var password_tes = bcrypt.CompareHashAndPassword([]byte(users.Password), []byte(password))
-
-	if password_tes == nil {
-		//login success
-		session := sessions.Start(w, r)
-		session.Set("username", users.Username)
-		session.Set("name", users.FirstName)
-		http.Redirect(w, r, "/", 302)
-	} else {
-		//login failed
-		http.Redirect(w, r, "/login", 302)
+		if password_tes == nil {
+			//login success
+			session := sessions.Start(w, r)
+			session.Set("username", users.Username)
+			session.Set("name", users.FirstName)
+			http.Redirect(w, r, "/", 302)
+		} else {
+			//login failed
+			http.Redirect(w, r, "/login", 302)
+		}
 	}
 
 }

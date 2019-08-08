@@ -25,7 +25,13 @@
 							<a href="/">Home</a>
 							<a href="/about">About</a>
 							<a href="/contact">Contact Us</a>
-							
+							{{if eq .User ""}}
+							<a href="/login">Login</a>
+							{{else}}
+							<a href="/articleku">Articles</a>                   
+							<a href="/pesan">Pesan</a>                   
+							<a href="/logout">Logout</a>
+							{{end}}
 						
 					</nav>
 				</div>
@@ -35,24 +41,22 @@
 		<!-- Main -->
 			<section id="main" >
 				<div class="inner">
-						<div class="row">
-								<form method="POST" class="col s12">
-										<div class="field">
-										<label for="email">Username</label>
-									  <input name="username" id="email" type="email" class="validate">									  								
-								  </div>
-								  
-								  <div class="field">
-										<label for="password">Password</label>
-									  <input name="password" id="password" type="password" class="validate">									  
-									</div>
-									<div class="field">
-											<ul class="actions">
-													<li><input type="submit" value="Login" class="alt" /></li>
-												</ul>											
-											 <p>Didn't have account? <a href="/register"> Register </a></p> 
-								</form>
-						 </div>
+					<header class="major special">
+						<h1>Pesan dari Pengunjung</h1>						
+					</header>
+					{{range .Pesana}}
+					<div>
+							<header>
+							<h4>Nama : {{ .Nama }} | Email : {{ .Email }}</h4>
+							<p>{{ .Isipesan }}</p>
+						</header>
+					<hr>	
+					</div>
+				{{else}}
+					<div>
+						<strong>Tidak ada Pesan</strong>
+					</div>
+				{{end}}
 				</div>
 			</section>
 
