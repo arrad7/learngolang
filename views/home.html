@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Generic - Introspect by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="http://healthwealthint.com/assets/css/main.css" />
+		<script src="http://localhost:8000/assets/js/jquery.min.js"></script>
+		<script src="http://localhost:8000/assets/js/skel.min.js"></script>
+		<script src="http://localhost:8000/assets/js/util.js"></script>
+		<script src="http://localhost:8000//assets/js/main.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="logo">GO Learning</a>
+					<nav id="nav">
+							<a href="/">Home</a>
+							<a href="/about">About</a>
+							<a href="/contact">Contact Us</a>
+							{{if eq .User ""}}
+							<a href="/login">Login</a>
+							{{else}}
+							<a href="/article">Articles</a>                   
+							<a href="/logout">Logout</a>
+							{{end}}
+						
+					</nav>
+				</div>
+			</header>
+			<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+		<!-- Main -->
+			<section id="main" >
+				<div class="inner">
+					<header class="major special">
+						<h1>Welcome {{ .User }}</h1>						
+					</header>
+					<hr>
+					{{range .Articles}}
+					<div>
+							<header>
+							<h3>{{ .Judul }}</h3>
+							<p>{{ .Isi }}</p>
+						</header>
+					<hr>	
+					</div>
+				{{else}}
+					<div>
+						<strong>Tidak ada Artikel</strong>
+					</div>
+				{{end}}
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<header>
+						<h2>Get in Touch</h2>
+					</header>
+					
+					<div class="copyright">
+						&copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a href="https://unsplash.com/">Unsplash</a>
+					</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+		
+
+	</body>
+</html>

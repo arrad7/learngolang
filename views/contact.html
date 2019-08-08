@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Generic - Introspect by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="https://healthwealthint.com/assets/css/main.css" />
+		<script src="https://healthwealthint.com/assets/js/jquery.min.js"></script>
+		<script src="https://healthwealthint.com/assets/js/skel.min.js"></script>
+		<script src="https://healthwealthint.com/assets/js/util.js"></script>
+		<script src="https://healthwealthint.com/assets/js/main.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="logo">GO Learning</a>
+					<nav id="nav">
+							<a href="/">Home</a>
+							<a href="/about">About</a>
+							<a href="/contact">Contact Us</a>
+							{{if eq .User ""}}
+							<a href="/login">Login</a>
+							{{else}}
+							<a href="/article">Articles</a>                   
+							<a href="/logout">Logout</a>
+							{{end}}
+						
+					</nav>
+				</div>
+			</header>
+			<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+		<!-- Main -->
+			<section id="main" >
+				<div class="inner">
+					<header class="major special">
+						<h1>Contact Us</h1>
+						<table border="2" class="alt" ><tr><td>
+						<form method="post" action="#">
+							<div class="field">
+								<label for="nama">Nama</label>
+								<input type="text" name="nama" id="nama"/>
+							</div>
+							<div class="field">
+									<label for="email">Email</label>
+									<input type="email" name="email" id="email"/>
+								</div>
+								<div class="field">
+										<label for="nama">Turing : [ {{ .Turing }} ] isi turing disamping</label>
+										<input type="nama" name="turing" id="nama"/>
+										<input type="text" name="turingini" value="{{ .Turing }}"/>
+									</div>
+							
+								<div class="field">
+								<label for="pesan">Pesan</label>
+								<textarea name="pesan" id="pesan" rows="5"></textarea>
+							</div>
+							
+							<ul class="actions">
+								<li><input type="submit" value="Kirim Pesan" class="alt" /></li>
+							</ul>
+						</form></td></tr></table>
+
+					</header>
+					<hr>
+					
+				
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<header>
+						<h2>Get in Touch</h2>
+					</header>
+					
+					<div class="copyright">
+						&copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a href="https://unsplash.com/">Unsplash</a>
+					</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+		
+
+	</body>
+</html>

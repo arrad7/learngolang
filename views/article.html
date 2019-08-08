@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<!--
+	Introspect by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Generic - Introspect by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="https://healthwealthint.com/assets/css/main.css" />
+		<script src="https://healthwealthint.com/assets/js/jquery.min.js"></script>
+		<script src="https://healthwealthint.com/assets/js/skel.min.js"></script>
+		<script src="https://healthwealthint.com/assets/js/util.js"></script>
+		<script src="https://healthwealthint.com/assets/js/main.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="index.html" class="logo">GO Learning</a>
+					<nav id="nav">
+							<a href="/">Home</a>
+							<a href="/about">About</a>
+							<a href="/contact">Contact Us</a>
+							{{if eq .User ""}}
+							<a href="/login">Login</a>
+							{{else}}
+							<a href="/article">Articles</a>                   
+							<a href="/logout">Logout</a>
+							{{end}}
+						
+					</nav>
+				</div>
+			</header>
+			<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+
+		<!-- Main -->
+			<section id="main" >
+				<div class="inner">
+					<header class="major special">
+						<h1>Artikel</h1>
+						<table border="2" class="alt" ><tr><td>
+						<form method="post" action="#">
+							<div class="field">
+								<label for="judul">Judul</label>
+								<input type="text" name="judul" id="judul"/>
+							
+							<div class="field">
+								<label for="isi">Isi Artikel</label>
+								<textarea name="isi" id="isi" rows="2"></textarea>
+							</div>
+							<ul class="actions">
+								<li><input type="submit" value="Tambah Artikel" class="alt" /></li>
+							</ul>
+						</form></td></tr></table>
+
+					</header>
+					<hr>
+					{{range .Articles}}
+					<table border="2" class="alt" ><tr><td width=75% height=100%>
+					<form method="post" action="/update">
+							 <input type="hidden" name="idup" value="{{ .ID }}" id="Id"/>
+							<input type="text" size=20 name="judulup" value="{{ .Judul }}" id="judul"/>
+							<textarea name="isiup" id="isi"  rows="3">{{ .Isi }}</textarea>
+							<table ><tr><td>
+									<input type="submit" value="Update Artikel" class="alt" />
+						</form>			</td><td>	
+							{{if eq .Sta "F"}}
+							<form method="post" action="/updatestatrue">
+								 <input type="hidden" name="idupsta" value="{{ .ID }}" id="Id"/>
+									<input type="submit" value="Publish" class="alt" />
+								</form>
+							{{else}}
+							<form method="post" action="/updatestafalse">
+								 <input type="hidden" name="idupsta" value="{{ .ID }}" id="Id"/>
+									<input type="submit" value="UnPublish" class="alt" />
+								</form>
+							{{end}}</td>
+							<td>
+							<form method="post" action="/updateaktif">
+								 <input type="hidden" name="idupsta" value="{{ .ID }}" id="Id"/>
+									<input type="submit" value="Hapus Data" class="alt" />
+								</form></td></tr></table>
+						</td></tr></table>
+				{{else}}
+					<div>
+						<strong>Tidak ada Artikel</strong>
+					</div>
+				{{end}}
+				
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<div class="inner">
+					<header>
+						<h2>Get in Touch</h2>
+					</header>
+					
+					<div class="copyright">
+						&copy; Untitled Design: <a href="https://templated.co/">TEMPLATED</a>. Images <a href="https://unsplash.com/">Unsplash</a>
+					</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+		
+
+	</body>
+</html>
