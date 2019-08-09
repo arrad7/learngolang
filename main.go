@@ -396,7 +396,18 @@ func contact(w http.ResponseWriter, r *http.Request) {
 
 func register(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
-		http.ServeFile(w, r, "views/register.html")
+		session := sessions.Start(w, r)
+		var data = map[string]string{
+			"Info": session.GetString("eror"),
+		}
+		var t, err = template.ParseFiles("views/register.html")
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		t.Execute(w, data)
+		session.Set("eror", "")
+		//http.ServeFile(w, r, "views/register.html")
 		return
 	}
 
@@ -424,6 +435,8 @@ func register(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
+		session := sessions.Start(w, r)
+		session.Set("eror", "Email sudah dipakai")
 		http.Redirect(w, r, "/register", 302)
 	}
 }
