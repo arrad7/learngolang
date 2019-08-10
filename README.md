@@ -5,10 +5,10 @@ Aplikasi untuk memenuhi Final Project dari GOlang Course
 #1.Create The Database with name go_db on mysql server
 Buat Database dengan nama go_db atau bisa menyesuaikan dengan kriteria anda
 dengan mengubah line ini:
-Main.go line 21 'db, err = sql.Open("mysql", "root:keypas@tcp(127.0.0.1)/go_db")'
-root = username mysql server
-keypas = password mysql server
-go_db = database yang digunakan
+#Main.go line 21 'db, err = sql.Open("mysql", "root:arrad@tcp(127.0.0.1)/go_db")'
+#root = username mysql server
+#arrad = password mysql server
+#go_db = database yang digunakan
 
 #2. Create Table 
 
